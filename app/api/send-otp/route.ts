@@ -2,9 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { SupabaseEmailOTPStore, generateEmailOTP, cleanExpiredOTPs, type EmailOTPRecord } from '@/lib/supabase-otp-store';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 export async function POST(request: NextRequest) {
+  // Initialize Resend only when needed to avoid build errors
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey || apiKey === 'dummy_key_for_demo') {
+    return NextResponse.json(
+      { error: 'Email service not configured' }, 
+      { status: 503 }
+    );
+  }
+  const resend = new Resend(apiKey);
   try {
     const body = await request.json();
     const { email } = body;
