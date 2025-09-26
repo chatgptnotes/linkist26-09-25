@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
       totalOrders: orders.length,
       totalSpent: orders.reduce((sum, order) => sum + order.pricing.total, 0),
       recentOrders: orders.slice(0, 5), // Last 5 orders
-      founderMember: orders.some(order => order.cardConfig?.quantity > 0), // Simple founder member logic
+      founderMember: orders.some(order => order.cardConfig?.quantity && order.cardConfig.quantity > 0), // Simple founder member logic
       joinDate: profile?.created_at || orders[0]?.createdAt || new Date().toISOString()
     }
 
