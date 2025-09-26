@@ -4,6 +4,9 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Order, OrderStatus } from './order-store'
 
+// Re-export types for external consumption
+export type { OrderStatus }
+
 // Create admin client with service role key for server-side operations
 const createAdminClient = () => {
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
